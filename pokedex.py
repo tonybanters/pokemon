@@ -2,9 +2,12 @@ import json
 import operator
 from collections import Counter
 from pokemon import *
+from natures import *
 
 with open('dex.json') as json_file:
 	dex = json.load(json_file)
+
+
 
 overgrow = Ability("Overgrow", "Does stuff")
 info = {
@@ -13,7 +16,7 @@ info = {
 		"spe" : 252,
 		"def" : 4
 	},
-	"nature" : "Modest",
+	"nature" : natures["Modest"],
 	"item" : "Choice Specs",
 	"ability" : overgrow
 }
@@ -42,6 +45,13 @@ def add_evs_to_stats(stats: dict, evs: dict):
 	a , b = Counter(stats) , Counter(evs)
 	return dict(a + b)
 
+def nature_modify(stats: dict, nature):
+	stats [ nature.get_plus() ] = int(1.1 *stats[nature.get_plus()])
+	stats [ nature.get_minus() ] = int(0.9*stats[nature.get_minus()])
+	return stats
+
+
+
 # print(dex['bulbasaur']['abilities'])
 # print("Overgrow" in dex['bulbasaur']['abilities'].values())
 # obj = add_evs_to_stats(dex['bulbasaur']['baseStats'], evs_test)
@@ -56,9 +66,11 @@ def create_mon_from_dex(dex: dict, info: dict, mon: str):
 	moveset = []
 	if info["ability"].get_name() not in dex[mon]['abilities'].values():
 		return "{} cannot learn {}.".format(mon, info['ability'])
+	stats = add_evs_to_stats(info["evs"], dex[mon]['baseStats'])
+	stats = nature_modify(stats, info['nature'])
 	pkmn = Pokemon(
 		dex[mon]['species'],
-		add_evs_to_stats(info["evs"], dex[mon]['baseStats']),
+		stats,
 		dex[mon]['types'],
 		info['ability'],
 		info['item'],

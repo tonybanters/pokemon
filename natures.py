@@ -138,13 +138,15 @@ class Nature:
 	def get_name(self):
 		return self.name
 	def get_plus(self):
-		return self.get_plus
+		return self.plus
 	def get_minus(self):
-		return self.get_minus
+		return self.minus
 
-nature_list = []
+nature_dict = {}
 
 for nature in natures.values():
-	nature_list.append(Nature(nature['name'], nature['plus'], nature['minus']))
+	nature_dict[ nature["name"] ] = (Nature(nature['name'], nature['plus'], nature['minus']))
+
+natures = nature_dict
 # for nat in nature_list:
 # 	print (nat.get_name())
