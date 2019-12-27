@@ -146,5 +146,5 @@ nature_list = []
 
 for nature in natures.values():
 	nature_list.append(Nature(nature['name'], nature['plus'], nature['minus']))
-for nat in nature_list:
-	print (nat.get_name())
+# for nat in nature_list:
+# 	print (nat.get_name())
