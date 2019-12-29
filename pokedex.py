@@ -24,7 +24,7 @@ info = {
 def validate_evs(evs: dict) -> bool:
 	validated = True
 	total = sum(evs.values())
-	print(total)
+	# print(total)
 	if total > 510 or total < 508:
 		return False
 	else:
@@ -64,6 +64,9 @@ def nature_modify(stats: dict, nature):
 def create_mon_from_dex(dex: dict, info: dict, mon: str):
 	mon = mon.lower()
 	moveset = []
+	if validate_evs(info['evs']) == False:
+		print("Please validate your EVs.")
+		return
 	if info["ability"].get_name() not in dex[mon]['abilities'].values():
 		return "{} cannot learn {}.".format(mon, info['ability'])
 	stats = add_evs_to_stats(info["evs"], dex[mon]['baseStats'])
